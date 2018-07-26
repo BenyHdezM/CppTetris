@@ -1,10 +1,8 @@
-#include <cstdlib>
 #include <ctime>
 #include <sstream>
 #include <string>
 #include <unistd.h>
 #include <pthread.h>
-//#include <Mmsystem.h>
 
 #include "miniwin.h"
 
@@ -280,7 +278,12 @@ void *juego (void *arg)
         Pieza copia = c;
         if (t==NINGUNA && tic > tics_nivel[nivel])
         {
-//            Beep(800,100);
+        #ifdef WINDOWS
+        #include <Windows.h>
+         Beep(800,100);
+        #elif linux
+            system("( speaker-test -t sine -f 800 )& pid=$! ; sleep 0.1s ; kill -9 $pid");
+        #endif
             tic = 0;
             t = ABAJO;
 
